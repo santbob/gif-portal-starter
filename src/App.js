@@ -16,7 +16,8 @@ const TEST_PIXEL_ARTS = [
 
 const App = () => {
   const [walletAddress, setWalletAddress] = useState(null);
-
+  const [seedWord, setSeedWord] = useState('');
+  const [pixelArtList, setPixelArtList] = useState([]);
 
   const checkIfWalletIsConnected = async () => {
     try {
@@ -54,10 +55,30 @@ const App = () => {
     </button>
   );
 
+  const onSeedWordChange = (event) => {
+    const { value } = event.target;
+    setSeedWord(value);
+  };
+
+  const sendSeed = async () => {
+    if (seedWord.length > 0) {
+      console.log('Pixel link:', `https://avatars.dicebear.com/api/pixel-art/${seedWord}.svg`);
+    } else {
+      console.log('Empty input. Try again.');
+    }
+    // reset the seed word
+    setSeedWord('');
+  };
+
   const renderConnectedContainer = () => (
     <div className="connected-container">
+      <input type="text" 
+        placeholder="Enter the seed word" 
+        value={seedWord}
+        onChange={onSeedWordChange}/>
+      <button className="cta-button submit-gif-button" onClick={sendSeed}>Submit</button>
       <div className="gif-grid">
-        {TEST_PIXEL_ARTS.map(art => (
+        {pixelArtList.map(art => (
           <div className="gif-item" key={art}>
             <img src={art} alt={art} />
           </div>
@@ -73,6 +94,17 @@ const App = () => {
     window.addEventListener('load', onLoad);
     return () => window.removeEventListener('load', onLoad);
   }, [])
+
+  useEffect(()=>{
+    if(walletAddress) {
+
+      console.log("Fetching the pixel art list...")
+      // access solana blockchain and get the pixel art list
+
+      // set state
+      setPixelArtList(TEST_PIXEL_ARTS)
+    }
+  }, [walletAddress])
 
   return (
 
