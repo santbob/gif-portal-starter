@@ -43,6 +43,27 @@
           "type": "string"
         }
       ]
+    },
+    {
+      "name": "vote",
+      "accounts": [
+        {
+          "name": "baseAccount",
+          "isMut": true,
+          "isSigner": false
+        },
+        {
+          "name": "user",
+          "isMut": true,
+          "isSigner": true
+        }
+      ],
+      "args": [
+        {
+          "name": "seed",
+          "type": "string"
+        }
+      ]
     }
   ],
   "accounts": [
@@ -51,10 +72,6 @@
       "type": {
         "kind": "struct",
         "fields": [
-          {
-            "name": "totalPixelArts",
-            "type": "u64"
-          },
           {
             "name": "pixelArtList",
             "type": {
@@ -80,12 +97,22 @@
           {
             "name": "userAddress",
             "type": "publicKey"
+          },
+          {
+            "name": "votes",
+            "type": {
+              "vec": "publicKey"
+            }
+          },
+          {
+            "name": "upvotes",
+            "type": "u64"
           }
         ]
       }
     }
   ],
   "metadata": {
-    "address": "HF9jSSZRkZDzvjZNVLaDFYDcSTLSFqExtkPnEhf7GKog"
+    "address": "8jBNH5HbemwKZSyNfz1fGLqp4tRTotU6fK8G8swXnWdj"
   }
 }

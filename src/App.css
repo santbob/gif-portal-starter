@@ -26,6 +26,7 @@
   top: 0;
   width: 100%;
 }
+
 .header {
   margin: 0;
   font-size: 50px;
@@ -99,6 +100,8 @@
   justify-items: center;
   margin: 0;
   padding: 0;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .art-list .art-item {
@@ -110,12 +113,38 @@
   margin: 10px;
 }
 
-.art-item .seed {
+.art-item .deets {
   color: #444;
   background: rgb(227, 247, 233);
   margin: 0 10px;
   padding: 5px;
   font-weight: 500;
+  display: flex;
+}
+.deets .seed {
+  display: flex;
+  align-items: flex-start;
+  flex: 1;
+  margin: 0 5px;
+}
+
+.deets .upvotes {
+  display: flex;
+  align-items: flex-end;
+  font-weight: bold;
+  color: #be3bff;
+}
+
+.deets .action {
+  display: flex;
+  align-items: flex-end;
+  margin: 0 5px;
+  cursor: pointer;
+}
+
+.deets .action.selected {
+  color: #be3bff;
+  font-weight: bold;
 }
 
 .art-item img {
@@ -125,7 +154,7 @@
   object-fit: cover;
 }
 
-.connected-container input[type='text'] {
+.connected-container input[type="text"] {
   display: inline-block;
   color: white;
   padding: 10px;

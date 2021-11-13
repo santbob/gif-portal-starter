@@ -3,6 +3,7 @@ import './App.css';
 import { useEffect, useState } from 'react';
 import idl from './idl.json';
 import kp from './keypair.json'
+import { FaHeart, FaGift } from 'react-icons/fa';
 
 import { Connection, PublicKey, clusterApiUrl } from '@solana/web3.js';
 import { Program, Provider, web3 } from '@project-serum/anchor';
@@ -71,6 +72,29 @@ const App = () => {
     return provider;
   }
 
+  const vote = async (seed) => {
+    console.log(`voting for the art ${seed}`)
+    try {
+      const provider = getProvider();
+      const program = new Program(idl, programID, provider);
+      await program.rpc.vote(seed, {
+        accounts: {
+          baseAccount: baseAccount.publicKey,
+          user: provider.wallet.publicKey,
+        }
+      });
+      console.log("Voted on the art named ", seed);
+      await getPixelArtList();
+    } catch (error) {
+      console.error('Error sending seedWord ', error);
+    }
+
+  }
+
+  const sendTip = async (seedWord) => {
+    console.log(seedWord)
+  }
+
   const renderNotConnectedContainer = () => (
     <button className="cta-button connect-wallet-button" onClick={connectWallet}>
       Connect to Wallet
@@ -88,7 +112,7 @@ const App = () => {
       return;
     }
     console.log('Pixel link:', `https://avatars.dicebear.com/api/pixel-art/${seedWord}.svg`);
-    
+
     try {
       const provider = getProvider();
       const program = new Program(idl, programID, provider);
@@ -126,10 +150,15 @@ const App = () => {
             onChange={onSeedWordChange} />
           <button className="cta-button submit-art-button" onClick={sendSeed}>Submit</button>
           <div className="art-list">
-            {pixelArtList.map(({pixelSeed}, index) => (
+            {pixelArtList.map(({ pixelSeed, votes, upvotes }, index) => (
               <div className="art-item" key={index}>
                 <img src={`https://avatars.dicebear.com/api/pixel-art/${pixelSeed}.svg`} alt={pixelSeed} />
-                <div className="seed">{pixelSeed} <i></i></div>
+                <div className="deets">
+                    <div className="seed">{pixelSeed}</div>
+                    {parseInt(upvotes.toString()) > 0 && (<div className="upvotes">{upvotes.toString()} votes</div>)}
+                    <FaHeart className={votes.join(',').includes(walletAddress) ? 'action selected' : 'action'} onClick={() => vote(pixelSeed)} />
+                    <FaGift className="action" onClick={() => sendTip(pixelSeed)} />
+                  </div>
               </div>
             ))}
           </div>
