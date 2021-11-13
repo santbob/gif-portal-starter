@@ -217,6 +217,7 @@ const App = () => {
       // access solana blockchain and get the pixel art list
       getPixelArtList();
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [walletAddress])
 
   return (
